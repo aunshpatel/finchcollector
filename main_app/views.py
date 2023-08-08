@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .models import Finch
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 # Create your views here.
 def home(request):
@@ -13,3 +14,21 @@ def finchs_index(request):
     return render(request, 'finchs/index.html',{
         'finchs':finchs
     })
+
+def finchs_detail(request, finch_id):
+    finch = Finch.objects.get(id=finch_id)
+    return render(request, 'finchs/detail.html',{
+        'finch':finch
+    })
+
+class FinchCreate(CreateView):
+    model = Finch
+    fields = '__all__'
+
+class FinchUpdate(UpdateView):
+    model = Finch
+    fields=['name','color','description']
+
+class FinchDelete(DeleteView):
+    model = Finch
+    success_url='/finchs'
